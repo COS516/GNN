@@ -19,7 +19,14 @@ classdef Formula
          
          for i = 1:numel(rawSolution)
              sol = strsplit(rawSolution{i}, ',');
+             
+             % Assign variable and its negation
              obj.solution(sol{1}) = sol{2};
+             if strcmp(sol{2},'True')
+                obj.solution(num2str(str2num(sol{1})+1)) = 'False';
+             else
+                obj.solution(num2str(str2num(sol{1})+1)) = 'True';
+             end
          end
       end
    end
