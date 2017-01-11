@@ -82,7 +82,6 @@ classdef DataSet < handle
                     subset.connMatrix(sub2ind(size(subset.connMatrix),connInd(:,1),connInd(:,2))) = 1;
                     numEdges = numEdges+size(connInd,1);
                 end
-%                 imagesc(subset.connMatrix)
                 
                 % If literal i and literal j are of the same variable (positive and negated versions) 
                 connInd = [(1:currFormula.numVars)'*2-1,(1:currFormula.numVars)'*2];
@@ -94,8 +93,7 @@ classdef DataSet < handle
                 connInd = connInd+(formulaIdx-1)*nNodesPerFormula; % shift indices to correct location in connMatrix
                 subset.connMatrix(sub2ind(size(subset.connMatrix),connInd(:,1),connInd(:,2))) = 1;
                 numEdges = numEdges+size(connInd,1);
-                imagesc(subset.connMatrix)
-                
+                                
                 % If either node i or j is a supernode. Each supernode is connected to every other node(literal) in its own formula.
                 connInd = [repmat(2*formulas{1}.numVars+1,formulas{1}.numVars*2,1),(1:(currFormula.numVars*2))'];
                 connInd = [connInd;connInd(:,2),connInd(:,1)]; % connMatrix is symmetric
@@ -104,7 +102,6 @@ classdef DataSet < handle
                 connInd = connInd+(formulaIdx-1)*nNodesPerFormula; % shift indices to correct location in connMatrix
                 subset.connMatrix(sub2ind(size(subset.connMatrix),connInd(:,1),connInd(:,2))) = 1;
                 numEdges = numEdges+size(connInd,1);
-%                 imagesc(subset.connMatrix)
             end
             
             % targets: Only the supernode labels matter; they will be 1 if the formula is satisfiable and -1 otherwise.
