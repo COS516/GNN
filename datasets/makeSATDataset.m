@@ -2,6 +2,6 @@ function makeSATDataset(numFormulae, numVariables, k, numClauses, numTrain, numT
 
 global dataSet
 
-dataSet = DataSet(numFormulae, numVariables, k, numClauses, numTrain, numTest, numValidate);
+dataSet = DataSet(numFormulae, numVariables, k, numClauses, numTrain, numTest, numValidate).asStruct();
 
 end
