@@ -1,6 +1,6 @@
 addpath(genpath('.'))
 
-numFormulae = 10;
+numFormulae = 1000;
 numVariables = 5;
 k = 3;
 numClauses = 20;
