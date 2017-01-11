@@ -1,15 +1,22 @@
 classdef Formula
    properties
+      k = 0;
+      numVars = 0;
+      numClauses = 0;
       formula = [];
       solution = containers.Map();
    end
    methods
       % Variable 2n and 2n + 1 are the variable n and its negation,
       % respectively
-      function obj = Formula(raw)
+      function obj = Formula(raw,k,numVars,numClauses)
          split = strsplit(raw, '|');
          rawFormula = strsplit(split{1}, ';');
          rawSolution = strsplit(split{2}, ';');
+         
+         obj.k = 3;
+         obj.numVars = 10;
+         obj.numClauses = 10;
          
          % Create 2D array of clauses
          % NOTE: Assumes all clauses have same number of formulae
