@@ -1,4 +1,4 @@
-classdef DataSet
+classdef DataSet < handle
     properties
         config = struct();
         trainSet = struct();
@@ -6,20 +6,48 @@ classdef DataSet
         testSet = struct();
     end
     methods
-        function obj = DataSet()
-           obj.config.type = 'classification';
-           obj.config.rejectUpperThreshold = 0;
-           obj.config.rejectLowerThreshold = 0;
-           
-           obj.trainSet = DataSet.EmptySubset();
-           obj.validationSet = DataSet.EmptySubset();
-           obj.testSet = DataSet.EmptySubset();
+        function obj = DataSet(numFormulae, numVariables, k, numClauses, numTrain, numTest, numValidate)
+            obj.config.type = 'classification';
+            obj.config.rejectUpperThreshold = 1;
+            obj.config.rejectLowerThreshold = 0;
+
+            obj.trainSet = DataSet.EmptySubset();
+            obj.validationSet = DataSet.EmptySubset();
+            obj.testSet = DataSet.EmptySubset();
+
+            fid = fopen(sprintf('./datasets/%d_%d_%d_%d.out', numFormulae, numVariables, k, numClauses));
+
+            trainingExamples = cell(1, numTrain);
+            testingExamples = cell(1, numTest);
+            validatingExamples = cell(1, numValidate);
+
+            counter = 0;
+            tline = fgets(fid);
+            
+            while ischar(tline)
+                formula = Formula(tline, numVariables, k, numClauses);
+
+                if counter < numTrain
+                    trainingExamples{counter + 1} = formula;
+                elseif counter < numTrain + numTest
+                    testingExamples{counter + 1 - numTrain} = formula;
+                elseif counter < numFormulae
+                    validatingExamples{counter + 1 - numTrain - numTest} = formula;
+                end
+
+                tline = fgets(fid);
+                counter = counter + 1;
+            end
+            
+            obj.addExamples(trainingExamples, 'train');
+            obj.addExamples(testingExamples, 'test');
+            obj.addExamples(validatingExamples, 'validation');
         end
         
         % TODO: Need to implement this
         % formulas - Nx1 cell array of formula structs
         % subsetName - string 'train' or 'validation' or 'test'
-        function success = addExamples(obj, formulas, subsetName)
+        function obj = addExamples(obj, formulas, subsetName)
             
             assert(~isempty(formulas), sprintf('No formulas for %sSet!', subsetName));
             
@@ -102,6 +130,15 @@ classdef DataSet
             % edge labels are sorted in ascending order of their lowest
             % numbered node first, then by the other node.
             subset.edgeLabels = fullEdgeLabels(:,find(sum(fullEdgeLabels))');
+            
+            switch subsetName
+                case 'train'
+                    obj.trainSet = subset;
+                case 'test'
+                    obj.testSet = subset;
+                case 'validation'
+                    obj.validationSet = subset;
+            end
         end
         
         function result = asStruct(obj)
