@@ -19,9 +19,9 @@ classdef DataSet
         % TODO: Need to implement this
         % formulas - Nx1 cell array of formula structs
         % subsetName - string 'train' or 'validation' or 'test'
-        function success = addExamples(obj,formulas,subsetName)
+        function success = addExamples(obj, formulas, subsetName)
             
-            assert(~isempty(formulas),sprintf('No formulas for %sSet!',subsetName));
+            assert(~isempty(formulas), sprintf('No formulas for %sSet!', subsetName));
             
             % Get number of graphs and total number of nodes
             numFormulas = length(formulas);
@@ -76,7 +76,7 @@ classdef DataSet
                 connInd = connInd+(formulaIdx-1)*nNodesPerFormula; % shift indices to correct location in connMatrix
                 subset.connMatrix(sub2ind(size(subset.connMatrix),connInd(:,1),connInd(:,2))) = 1;
                 numEdges = numEdges+size(connInd,1);
-                imagesc(subset.connMatrix)
+%                 imagesc(subset.connMatrix)
             end
             
             % targets: Only the supernode labels matter; they will be 1 if the formula is satisfiable and -1 otherwise.
@@ -85,7 +85,7 @@ classdef DataSet
             subset.maskMatrix = sparse(subset.nNodes,subset.nNodes);
             for formulaIdx = 1:numFormulas
                 subset.maskMatrix(formulaIdx*nNodesPerFormula,formulaIdx*nNodesPerFormula) = 1;
-                if (~isempty(formulas{formulaIdx}.solution))
+                if (formulas{formulaIdx}.isSat())
                     subset.targets(formulaIdx*nNodesPerFormula) = 1;
                 else
                     subset.targets(formulaIdx*nNodesPerFormula) = -1;
