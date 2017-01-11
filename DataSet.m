@@ -43,10 +43,14 @@ classdef DataSet
                 % 1. If literal i and literal j appear together in any clause
                 for clauseIdx = 1:size(currFormula.formula,1)
                     connInd = unique(nchoosek(currFormula.formula(clauseIdx,:),2),'rows');
-                    connInd = [connInd;connInd(:,2),connInd(:,1)]+1; % connMatrix is symmetric (add 1 since variables start at 0)
+                    
+                    % connMatrix is symmetric (add 1 since variables start at 0)
+                    connInd = [connInd;connInd(:,2),connInd(:,1)]+1; 
                     edgeIdx = sub2ind([nNodesPerFormula,nNodesPerFormula],connInd(:,1),connInd(:,2))+(formulaIdx-1)*nNodesPerFormula*nNodesPerFormula;
                     fullEdgeLabels(sub2ind(size(fullEdgeLabels),repmat(clauseIdx,size(edgeIdx,1),1),edgeIdx)) = 1;
-                    connInd = connInd+(formulaIdx-1)*nNodesPerFormula; % shift indices to correct location in connMatrix
+                    
+                    % shift indices to correct location in connMatrix
+                    connInd = connInd+(formulaIdx-1)*nNodesPerFormula; 
                     subset.connMatrix(sub2ind(size(subset.connMatrix),connInd(:,1),connInd(:,2))) = 1;
                     numEdges = numEdges+size(connInd,1);
                 end
@@ -54,7 +58,9 @@ classdef DataSet
                 
                 % If literal i and literal j are of the same variable (positive and negated versions) 
                 connInd = [(1:currFormula.numVars)'*2-1,(1:currFormula.numVars)'*2];
-                connInd = [connInd;connInd(:,2),connInd(:,1)]; % connMatrix is symmetric
+                
+                % connMatrix is symmetric
+                connInd = [connInd;connInd(:,2),connInd(:,1)]; 
                 edgeIdx = sub2ind([nNodesPerFormula,nNodesPerFormula],connInd(:,1),connInd(:,2))+(formulaIdx-1)*nNodesPerFormula*nNodesPerFormula;
                 fullEdgeLabels(sub2ind(size(fullEdgeLabels),repmat(formulas{1}.numClauses+1,size(edgeIdx,1),1),edgeIdx)) = 1;
                 connInd = connInd+(formulaIdx-1)*nNodesPerFormula; % shift indices to correct location in connMatrix

@@ -18,19 +18,19 @@ data = '1,14,8;3,12,15;15,15,11;0,1,8;17,8,7;8,8,14;4,2,16;6,17,14;14,1,19;12,19
 formula = Formula(data);
 
 % Example to generate a formula (use python-matlab interface)
-genOutput = python('generator/__init__.py');
-genOutput = strrep(genOutput,'], [',';');
-genOutput = strrep(genOutput,', ',',');
-genOutput = strrep(genOutput,'[[','');
-genOutput = strrep(genOutput,']]','');
+% genOutput = python('generator/__init__.py');
+% genOutput = strrep(genOutput,'], [',';');
+% genOutput = strrep(genOutput,', ',',');
+% genOutput = strrep(genOutput,'[[','');
+% genOutput = strrep(genOutput,']]','');
 
-formula = Formula(genOutput);
+formula = Formula(data);
 
 dataSet = DataSet();
 formulas{1} = formula;
 formulas{2} = formula;
 formulas{3} = formula;
-dataSet.addExamples(formulas,'train');
+dataSet.addExamples(formulas, 'train');
 
 % 
 % global dataSet
