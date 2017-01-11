@@ -8,7 +8,7 @@ classdef DataSet < handle
     methods
         function obj = DataSet(numFormulae, numVariables, k, numClauses, numTrain, numTest, numValidate)
             obj.config.type = 'classification';
-            obj.config.rejectUpperThreshold = 1;
+            obj.config.rejectUpperThreshold = 0;
             obj.config.rejectLowerThreshold = 0;
 
             obj.trainSet = DataSet.EmptySubset();
