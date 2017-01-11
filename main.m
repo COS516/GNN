@@ -10,3 +10,5 @@ numTest     = 0.1 * numFormulae;
 numValidate = 0.1 * numFormulae;
 
 makeSATDataset(numFormulae, numVariables, k, numClauses, numTrain, numTest, numValidate);
+
+clear numFormulae numVariables k numClauses numTrain numTest numValidate;
