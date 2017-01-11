@@ -14,9 +14,9 @@ classdef Formula
          rawFormula = strsplit(split{1}, ';');
          rawSolution = strsplit(split{2}, ';');
          
-         obj.k = 3;
-         obj.numVars = 10;
-         obj.numClauses = 10;
+         obj.k = k;
+         obj.numVars = numVars;
+         obj.numClauses = numClauses;
          
          % Create 2D array of clauses
          % NOTE: Assumes all clauses have same number of formulae
