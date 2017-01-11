@@ -15,29 +15,51 @@ classdef DataSet < handle
             obj.validationSet = DataSet.EmptySubset();
             obj.testSet = DataSet.EmptySubset();
 
+            % Assumes that we have equal number of satisfiable and
+            % unsatisfiable
             fid = fopen(sprintf('./datasets/%d_%d_%d_%d.out', numFormulae, numVariables, k, numClauses));
 
+            satisfiableFormulae = cell(1, numFormulae / 2);
+            unsatisfiableFormulae = cell(1, numFormulae / 2);       
+            
+            counter = 1;
+            satisfiableCounter = 1;
+            unsatisfiableCounter = 1;
+            
+            line = fgets(fid);
+            while ischar(line)               
+                formula = Formula(line, numVariables, k, numClauses);
+                
+                if formula.isSat()
+                   satisfiableFormulae{satisfiableCounter} = formula;
+                   satisfiableCounter = satisfiableCounter + 1;
+                else
+                    unsatisfiableFormulae{unsatisfiableCounter} = formula;
+                    unsatisfiableCounter = unsatisfiableCounter + 1;
+                end
+                
+                line = fgets(fid);             
+                counter = counter + 1;
+            end
+            
             trainingExamples = cell(1, numTrain);
             testingExamples = cell(1, numTest);
             validatingExamples = cell(1, numValidate);
-
-            counter = 0;
-            tline = fgets(fid);
             
-            while ischar(tline)
-                formula = Formula(tline, numVariables, k, numClauses);
-
-                if counter < numTrain
-                    trainingExamples{counter + 1} = formula;
-                elseif counter < numTrain + numTest
-                    testingExamples{counter + 1 - numTrain} = formula;
-                elseif counter < numFormulae
-                    validatingExamples{counter + 1 - numTrain - numTest} = formula;
-                end
-
-                tline = fgets(fid);
-                counter = counter + 1;
+            for i = 1 : (numTrain / 2)
+                trainingExamples{2 * i - 1} = satisfiableFormulae{i};
+                trainingExamples{2 * i} = unsatisfiableFormulae{i};
             end
+            
+            for i = 1 : (numTest / 2)
+                testingExamples{2 * i - 1} = satisfiableFormulae{i + numTrain / 2};
+                testingExamples{2 * i} = unsatisfiableFormulae{i + numTrain / 2};
+            end
+            
+            for i = 1 : (numValidate / 2)
+                validatingExamples{2 * i - 1} = satisfiableFormulae{i + (numTrain + numTest) / 2};
+                validatingExamples{2 * i} = unsatisfiableFormulae{i + (numTrain + numTest) / 2};
+            end           
             
             obj.addExamples(trainingExamples, 'train');
             obj.addExamples(testingExamples, 'test');
