@@ -37,7 +37,7 @@ classdef DataSet
             numEdges = 0;
             for formulaIdx = 1:numFormulas
                 
-                currFormula = formulas{formulaIdx} 
+                currFormula = formulas{formulaIdx};
                 
                 % There are 3 scenarios where connMatrix(i,j) = 1:
                 % 1. If literal i and literal j appear together in any clause
@@ -54,7 +54,7 @@ classdef DataSet
                     subset.connMatrix(sub2ind(size(subset.connMatrix),connInd(:,1),connInd(:,2))) = 1;
                     numEdges = numEdges+size(connInd,1);
                 end
-                imagesc(subset.connMatrix)
+%                 imagesc(subset.connMatrix)
                 
                 % If literal i and literal j are of the same variable (positive and negated versions) 
                 connInd = [(1:currFormula.numVars)'*2-1,(1:currFormula.numVars)'*2];
@@ -102,12 +102,6 @@ classdef DataSet
             % edge labels are sorted in ascending order of their lowest
             % numbered node first, then by the other node.
             subset.edgeLabels = fullEdgeLabels(:,find(sum(fullEdgeLabels))');
-                
-%             imagesc(subset.connMatrix)
-%             imagesc(subset.maskMatrix)
-%             imagesc(subset.nodeLabels)
-%             imagesc(subset.edgeLabels)
-%             imagesc(subset.targets)
         end
         
         function result = asStruct(obj)

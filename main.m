@@ -6,33 +6,35 @@ global learning
 global dataSet
 global testing
 
-% run makeCliqueDataset
-% Configure GNN.config
-% learn;
-% plotTrainingResults;
-% test;
+numTrain = 800;
+numTest = 100;
+numValidate = 100;
 
-% Variable 2n and 2n + 1 are the variable n and its negation, respectively
-% data = '1,14,8;3,12,15;15,15,11;0,1,8;17,8,7;8,8,14;4,2,16;6,17,14;14,1,19;12,19,15;8,19,4;15,16,18;1,17,15;13,15,17;14,7,16;19,16,2;4,9,7;4,17,15;18,19,18;14,3,8|0,False;2,False;4,True;6,False;8,True;10,False;12,False;14,False;16,False;18,False;1,True;3,True;5,False;7,True;9,False;11,True;13,True;15,True;17,True;19,True';
-data = '1,14,8;3,12,15;15,15,11;0,1,8;17,8,7;8,8,14;4,2,16;6,17,14;14,1,19;12,19,15;8,19,4;15,16,18;1,17,15;13,15,17;14,7,16;19,16,2;4,9,7;4,17,15;18,19,18;14,3,8|0,False;2,False;4,True;6,False;8,True;10,False;12,False;14,False;16,False;18,False';
-formula = Formula(data);
+% TODO: Assert that numTrain + numTest + numValidate <= numFormulae
+numFormulae = 1000;
+numVariables = 5;
+k = 3;
+numClauses = 20;
 
-% Example to generate a formula (use python-matlab interface)
-% genOutput = python('generator/__init__.py');
-% genOutput = strrep(genOutput,'], [',';');
-% genOutput = strrep(genOutput,', ',',');
-% genOutput = strrep(genOutput,'[[','');
-% genOutput = strrep(genOutput,']]','');
+fid = fopen(sprintf('./datasets/%d_%d_%d_%d.out', numFormulae, numVariables, k, numClauses));
 
-formula = Formula(data);
+trainingExamples = cell(1, numTrain);
+testingExamples = cell(1, numTest);
+validatingExamples = cell(1, numValidate);
+
+counter = 0;
+tline = fgets(fid);
+while ischar(tline)
+    if counter < numTrain
+        trainingExamples{counter + 1} = Formula(tline, 5, 3, 20);
+    end
+    tline = fgets(fid);
+    counter = counter + 1;
+end
 
 dataSet = DataSet();
-formulas{1} = formula;
-formulas{2} = formula;
-formulas{3} = formula;
-dataSet.addExamples(formulas, 'train');
+% dataSet.addExamples(formulas, 'train');
 
-% 
 % global dataSet
 % 
 % dataSet.config
