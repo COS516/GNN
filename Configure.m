@@ -10,7 +10,7 @@ function Configure(file)
 % Configure options for GNN
 
 addpath(genpath(pwd));
- try
+ %try
     global model model_name learn learn_name general general_name dynamicSystem learning dataSet
     if nargin ~= 1
         file='GNN.config';      %default config file
@@ -235,12 +235,12 @@ addpath(genpath(pwd));
     
     dynamicSystem.config.configured=1;
     
- catch errMessage % ari edited
-     err(0,['Ooops. There was an error! Configuration was not completed.']);
-     %cleanup
-     clear global dynamicSystem learning model model_name learn learn_name general general_name
-     return;
- end
+ %catch errMessage % ari edited
+%      err(0,['Ooops. There was an error! Configuration was not completed.']);
+%      %cleanup
+%      clear global dynamicSystem learning model model_name learn learn_name general general_name
+%      return;
+%  end
 
 
 

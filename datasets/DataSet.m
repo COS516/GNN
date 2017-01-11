@@ -51,6 +51,8 @@ classdef DataSet < handle
             
             assert(~isempty(formulas), sprintf('No formulas for %sSet!', subsetName));
             
+            obj.config.edgeLabelsDim = 2 + formulas{1}.numClauses;
+            
             % Get number of graphs and total number of nodes
             numFormulas = length(formulas);
             subset.graphNum = numFormulas;
