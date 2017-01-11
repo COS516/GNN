@@ -140,6 +140,9 @@ classdef DataSet < handle
         
         function result = asStruct(obj)
             result.config = obj.config;
+            result.trainSet = obj.trainSet;
+            result.testSet = obj.testSet;
+            result.validationSet = obj.validationSet;
         end
     end
     methods (Static)
