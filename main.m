@@ -1,11 +1,12 @@
 addpath(genpath('.'))
+clear all;
 
-% global dynamicSystem
-% global learning
-% global dataSet
-% global testing
-% 
-% run datasets/makeCliqueDataset
+global dynamicSystem
+global learning
+global dataSet
+global testing
+
+% run makeCliqueDataset
 % Configure GNN.config
 % learn;
 % plotTrainingResults;
@@ -21,9 +22,15 @@ genOutput = python('generator/__init__.py');
 genOutput = strrep(genOutput,'], [',';');
 genOutput = strrep(genOutput,', ',',');
 genOutput = strrep(genOutput,'[[','');
-genOutput = strrep(genOutput,']]','')
+genOutput = strrep(genOutput,']]','');
 
 formula = Formula(genOutput);
+
+dataSet = DataSet();
+formulas{1} = formula;
+formulas{2} = formula;
+formulas{3} = formula;
+dataSet.addExamples(formulas,'train');
 
 % 
 % global dataSet
