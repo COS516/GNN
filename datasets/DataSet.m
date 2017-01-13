@@ -27,7 +27,9 @@ classdef DataSet < handle
             unsatisfiableCounter = 1;
             
             line = fgets(fid);
-            while ischar(line)               
+            while ischar(line)
+                disp(['Reading formula ' num2str(counter)]);
+                
                 formula = Formula(line, numVariables, k, numClauses);
                 
                 if formula.isSat()
@@ -88,6 +90,8 @@ classdef DataSet < handle
             
             numEdges = 0;
             for formulaIdx = 1:numFormulas
+                
+                disp(['Adding formula ' num2str(formulaIdx)]);
                 
                 currFormula = formulas{formulaIdx};
                 
