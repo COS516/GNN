@@ -4,6 +4,11 @@ classdef DataSet < handle
         trainSet = struct();
         validationSet = struct();
         testSet = struct();
+        
+        numFormulae = 0;
+        numVariables = 0;
+        k = 0;
+        numClauses = 0;
     end
     methods
         function obj = DataSet(numFormulae, numVariables, k, numClauses, numTrain, numTest, numValidate)
@@ -14,10 +19,15 @@ classdef DataSet < handle
             obj.trainSet = DataSet.EmptySubset();
             obj.validationSet = DataSet.EmptySubset();
             obj.testSet = DataSet.EmptySubset();
+            
+            obj.numFormulae = numFormulae;
+            obj.numVariables = numVariables;
+            obj.k = k;
+            obj.numClauses = numClauses;
 
             % Assumes that we have equal number of satisfiable and
             % unsatisfiable
-            fid = fopen(sprintf('./datasets/%d_%d_%d_%d.out', numFormulae, numVariables, k, numClauses));
+            fid = fopen(sprintf('./datasets/SAT/%d/%d_%d_%d_%d.out', numFormulae, numFormulae, numVariables, k, numClauses));
 
             satisfiableFormulae = cell(1, numFormulae / 2);
             unsatisfiableFormulae = cell(1, numFormulae / 2);       
@@ -26,9 +36,11 @@ classdef DataSet < handle
             satisfiableCounter = 1;
             unsatisfiableCounter = 1;
             
+            progressbar(sprintf('Reading formulae for (%d, %d, %d, %d)', numFormulae, numVariables, k, numClauses));
             line = fgets(fid);
             while ischar(line)
-                disp(['Reading formula ' num2str(counter)]);
+%                 disp(['Reading formula ' num2str(counter)]);
+                progressbar(counter / numFormulae);
                 
                 formula = Formula(line, numVariables, k, numClauses);
                 
@@ -89,9 +101,10 @@ classdef DataSet < handle
             fullEdgeLabels = sparse(formulas{1}.numClauses+2,numFormulas*nNodesPerFormula*nNodesPerFormula);
             
             numEdges = 0;
+            progressbar(sprintf('Adding formulae for (%d, %d, %d, %d)', obj.numFormulae, obj.numVariables, obj.k, obj.numClauses));
             for formulaIdx = 1:numFormulas
                 
-                disp(['Adding formula ' num2str(formulaIdx)]);
+                progressbar(formulaIdx / numFormulas);
                 
                 currFormula = formulas{formulaIdx};
                 
