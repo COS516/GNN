@@ -22,7 +22,7 @@ classdef Formula
          % Create 2D array of clauses
          % NOTE: Assumes all clauses have same number of formulae
          for i = 1:numel(rawFormula)
-             obj.formula = [obj.formula; cellfun(@(x)str2Int(x), strsplit(rawFormula{i}, ','))];
+             obj.formula{length(obj.formula)+1} = cellfun(@(x)str2Int(x), strsplit(rawFormula{i}, ','));
          end
          
          obj.solution = ~strcmp(strtrim(split{2}), ';');
