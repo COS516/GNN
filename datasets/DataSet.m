@@ -113,8 +113,9 @@ classdef DataSet < handle
                 
                 % There are 3 scenarios where connMatrix(i,j) = 1:
                 % 1. If literal i and literal j appear together in any clause
-                for clauseIdx = 1:size(currFormula.formula,1)
+                for clauseIdx = 1:length(currFormula.formula)
                     connInd = unique(nchoosek(currFormula.formula{clauseIdx},2),'rows');
+%                     connInd = unique(nchoosek(currFormula.formula(clauseIdx,:),2),'rows');
                     
                     % connMatrix is symmetric (add 1 since variables start at 0)
                     connInd = [connInd;connInd(:,2),connInd(:,1)]+1; 
