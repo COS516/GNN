@@ -35,4 +35,4 @@ preds = sign(outState.outNetState.outs);
 correct = preds == dataSet.(dataset).targets;
 [inds, ~] = find(dataSet.(dataset).maskMatrix);
 acc = sum(correct(inds))/length(inds);
-e = acc;
+e = 1 - acc;
