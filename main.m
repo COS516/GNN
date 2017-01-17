@@ -1,6 +1,6 @@
 addpath(genpath('.'))
 
-numFormulaeArray = [1000, 10000, 50000];
+numFormulaeArray = [1000]; %10,000 50,000
 
 global dataSet;
 
@@ -19,10 +19,14 @@ for numFormulae = numFormulaeArray
         numTest     = 0.1 * numFormulae;
         numValidate = 0.1 * numFormulae;
 
-        makeSATDataset(numFormulae, numVariables, k, numClauses, numTrain, numTest, numValidate);
-        
         outFile = sprintf('./datasets/SAT/%d/%d_%d_%d_%d.mat', numFormulae, numFormulae, numVariables, k, numClauses);
-        save(outFile, 'dataSet');
+        fprintf('%s\n',outFile);
+        if exist(outFile)
+            load(outFile);
+        else
+            makeSATDataset(numFormulae, numVariables, k, numClauses, numTrain, numTest, numValidate);
+            save(outFile, 'dataSet');
+        end
     end
 end
 
