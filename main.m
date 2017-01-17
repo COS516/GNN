@@ -38,8 +38,8 @@ for experimentIdx = 1:length(experimentFiles)
 end
 
 % Experiment 1.2 (large GNN)
-experimentFiles = {'experiments/exp1_2_1000_5_3_20.mat','experiments/exp1_2_2000_5_3_20.mat','experiments/exp1_2_5000_5_3_20.mat','experiments/exp1_2_10000_5_3_20.mat'};
-experimentTitles = {'2x Params, 1000 Training Formulae','2x Params, 2000 Training Formulae','2x Params, 5000 Training Formulae','2x Params, 10000 Training Formulae'};
+experimentFiles = {'experiments/exp1_2_1000_5_3_20.mat','experiments/exp1_2_2000_5_3_20.mat','experiments/exp1_2_5000_5_3_20.mat'};
+experimentTitles = {'2x Params, 1000 Training Formulae','2x Params, 2000 Training Formulae','2x Params, 5000 Training Formulae'};
 for experimentIdx = 1:length(experimentFiles)
     load(experimentFiles{experimentIdx});
     if isfield(learning.history,'trainErrorHistory')
